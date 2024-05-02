@@ -1,0 +1,9 @@
+
+
+.blogTittle{
+    color: var(--text-primary);
+}
+
+.blogDesc{
+    color: var(--text-secondary);
+}

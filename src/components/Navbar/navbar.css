@@ -1,0 +1,19 @@
+
+
+.navTittle{
+    font-size: 20px;
+}
+
+.navTittle h1{
+    margin-bottom: 10px;
+}
+
+.toggle{
+    background: var(--background);
+    color: var(--text-primary);
+}
+
+.linkText{
+    color:var(--text-primary);
+    text-decoration: none;
+}

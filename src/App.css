@@ -1,0 +1,17 @@
+
+:root{
+    --background:white;
+    --text-primary:black;
+    --text-secondary:black;
+}
+
+[data-theme='dark']{
+    --background:black;
+    --text-primary:white;
+    --text-secondary:grey;
+}
+
+*{
+    background-color: var(--background);
+    color: var(--text-primary);
+}
