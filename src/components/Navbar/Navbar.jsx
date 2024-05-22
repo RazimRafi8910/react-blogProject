@@ -3,19 +3,23 @@ import { Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
-import useTheme from "../../context/themeContext";
 import UserAcount from "../UserAcount";
 import NavbarBoot from "react-bootstrap/Navbar";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "../../slice/userSlice";
+import { changeTheme } from "../../slice/themeSlice";
 import "./navbar.css";
 
 function Navbar() {
-    const { theme, changeTheme } = useTheme();
+    const theme = useSelector(state => state.themeReducer.theme);
     const [isUser, setIsUser] = useState(null);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         let listent = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setIsUser(user);
+                dispatch(setUserData({ displayName: user.displayName, email: user.email, photoURL: user.photoURL, uid:user.uid }));
             } else {
                 setIsUser(null);
             }
@@ -39,16 +43,16 @@ function Navbar() {
                             <Link to={"/"} className="mb-0 mx-2 linkText">Blog</Link>
                         </Nav.Link>
                         <Nav.Link>
-                            <Link to={"/post"} className="mb-0 mx-2 linkText">Post</Link>
+                            <Link to={"/post"} className="mb-0 mx-2 linkText">New Post</Link>
                         </Nav.Link>
                     </Nav>
                     <Nav >
                         {theme == "light" && (
                             <button
-                                className="btn border border-dark mb-1 w-50 ms-3"
+                                className="btn border border-dark mb-1 w-50 me-3"
                                 type="button"
                                 onClick={() => {
-                                    changeTheme();
+                                    dispatch(changeTheme());
                                 }}
                             >
                                 <i class="toggle fa-solid fa-moon"></i>
@@ -56,10 +60,10 @@ function Navbar() {
                         )}
                         {theme == "dark" && (
                             <button
-                                className="btn btn-outline-dark ms-3 mb-1 w-50"
+                                className="btn btn-outline-dark me-3 mb-1 w-50"
                                 type="button"
                                 onClick={() => {
-                                    changeTheme();
+                                    dispatch(changeTheme());
                                 }}
                             >
                                 <i class="fa-regular fa-sun"></i>
@@ -72,22 +76,6 @@ function Navbar() {
             </NavbarBoot>
             <hr className="mt-0"/>
         </>
-        // <Container>
-        //     <nav className="p-0 navbar pt-2">
-        //         <div className="d-flex align-items-center navTittle">
-        //             <h1>BlogProject</h1>
-        //         <div className="d-flex align-items-center ms-5">
-        //             <Link to={'/'} className="mb-0 mx-2 linkText">Blog</Link>
-        //                 <Link to={'/post'} className="mb-0 mx-2 linkText">Post</Link>
-        //         </div>
-        //         </div>
-        //         <div className="d-flex align-items-center">
-        //             { theme=="light" && <button className="btn border border-dark mx-3" type="button" onClick={()=>{changeTheme()}}><i class="toggle fa-solid fa-moon"></i></button> }
-        //             {theme == "dark" && <button className="btn btn-outline-dark mx-3" type="button" onClick={() => { changeTheme() }}><i class="fa-regular fa-sun"></i></button>}
-        //             {isUser ? <UserAcount user={isUser} /> : <Link to={'/login'} data-bs-theme={theme} className="btn btn-primary">Login</Link>}
-        //         </div>
-        //     </nav>
-        // </Container>
     );
 }
 

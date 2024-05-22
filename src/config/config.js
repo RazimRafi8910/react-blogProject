@@ -7,6 +7,7 @@ const config = {
     firebaseProjectId: String(import.meta.env.VITE_FIREBASE_PROJECTID),
     firebaseStorageBucket: String(import.meta.env.VITE_FIREBASE_STORAGEBUCKET),
     firebaseMessagignSenderId: String(import.meta.env.VITE_FIREBASE_STORAGEBUCKET),
+    firebaseDatebaseURL: String(import.meta.env.VITE_FIREBASE_DATABASEURL),
 };
 
 

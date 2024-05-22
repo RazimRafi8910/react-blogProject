@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { emailSignin, googleLoging } from "../firebase/firebaseAuth";
+import * as yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 
 
 function Signup() {
@@ -9,7 +11,16 @@ function Signup() {
     const [error, setError] = useState('');;
     let navigate = useNavigate()
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    //yup form validation schema
+    const schema = yup.object().shape({
+        username: yup.string().required(),
+        email: yup.string().email().required(),
+        password: yup.string().required(),
+    })
+
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
 
     //sign in with email and password
     const onSubmit = async(data) => {

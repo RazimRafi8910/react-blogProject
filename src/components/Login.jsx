@@ -2,20 +2,29 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { emailLogin, googleLoging } from '../firebase/firebaseAuth';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 function Login() {
     const [isLodding, setIsLodding] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    //yup schema for validation
+    const schema = yup.object().shape({
+        email: yup.string().email().required(),
+        password:yup.string().min(6).required(),
+    })
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver:yupResolver(schema),
+    });
 
     const onSubmit = async (data) => {
         setIsLodding(true);
 
         try {
-            const user = await emailLogin(data.email, data.password);
+            await emailLogin(data.email, data.password);
             navigate('/');
         } catch (error) {
             if (error.code === 'auth/invalid-email' || error.code === 'auth/user-not-found') {
@@ -31,6 +40,7 @@ function Login() {
         }
     }
 
+    //google login
     const handleGoogleLogin = async () => {
         setIsLodding(true);
 
@@ -85,6 +95,7 @@ function Login() {
                                             borderColor: "var(--text-secondary)",
                                         }}
                                     />
+                                    <p className='text-danger'>{ errors.email?.message }</p>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="inputPass" className="form-label">Password</label>
@@ -99,6 +110,7 @@ function Login() {
                                             borderColor: "var(--text-secondary)",
                                         }}
                                     />
+                                    <p className='text-danger'>{ errors.password?.message }</p>
                                 </div>
                             </div>
                             <Link to={"/"} className="ms-3">

@@ -1,17 +1,21 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import "./BlogCard.css";
-import useTheme from "../../context/themeContext";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function BlogCard() {
-    const { theme } = useTheme();
+    const theme = useSelector(state => state.themeReducer.theme);
+
     return (
         <div className="d-flex justify-content-center col-lg-4 col-md-6 my-3">
             <Card style={{ width: "auto", maxWidth: "30rem" }} data-bs-theme={theme}>
+                <Link to={'/post/details'} className="text-decoration-none">
                 <Card.Img
                     variant="top"
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvMG-uuOx17ulED662t2HU1EOFHL8gEUqrewxMWf1IxQ&s"
-                />
+                    />
+                    </Link>
                 <div className="d-flex justify-content-between pt-2 ps-3">
                     <div className="profile d-flex align-items-center">
                         <div className="bg-secondary rounded-circle px-3 py-1">
@@ -40,12 +44,12 @@ function BlogCard() {
                     </Card.Text>
                     <a className="mx-2" href="">
                         <i class="text-secondary fs-4 fa-solid fa-thumbs-up"></i>
-                        Likes
+                       0 Likes
                     </a>
                     <a className="mx-2" href="">
                         <i style={{transform:"rotate(180deg)"}} class="text-secondary fs-4 fa-solid fa-thumbs-up"></i>
                     </a>
-                </Card.Body>
+                    </Card.Body>
             </Card>
         </div>
     );
