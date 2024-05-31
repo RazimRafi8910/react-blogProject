@@ -1,17 +1,23 @@
 
 :root{
+    --secondary-bg:rgb(242, 241, 241);
     --background:white;
     --text-primary:black;
     --text-secondary:black;
 }
 
 [data-theme='dark']{
-    --background:black;
+    --secondary-bg:black;
+    --background:rgb(0, 0, 0);
     --text-primary:white;
     --text-secondary:grey;
 }
 
 *{
-    background-color: var(--background);
+    
     color: var(--text-primary);
+}
+
+.App{
+    background-color: var(--secondary-bg);
 }

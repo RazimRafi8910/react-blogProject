@@ -1,5 +1,8 @@
-# React + Vite
+# Blog Project
 
+This is a Bloging app created on React + vite. The backend is [Firebase](/firebase.com)
+
+#### React + vite
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

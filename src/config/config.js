@@ -8,6 +8,7 @@ const config = {
     firebaseStorageBucket: String(import.meta.env.VITE_FIREBASE_STORAGEBUCKET),
     firebaseMessagignSenderId: String(import.meta.env.VITE_FIREBASE_STORAGEBUCKET),
     firebaseDatebaseURL: String(import.meta.env.VITE_FIREBASE_DATABASEURL),
+    tinymceApiKey:String(import.meta.env.VITE_TINYMCE_API_KEY),
 };
 
 

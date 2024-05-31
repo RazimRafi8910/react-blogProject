@@ -10,7 +10,6 @@ const themeSlice = createSlice({
         changeTheme: (state) => {
             state.theme = state.theme === "light" ? "dark" : "light";
             window.localStorage.setItem('theme', state.theme);
-            console.log(state.theme)
         }
     }
 });

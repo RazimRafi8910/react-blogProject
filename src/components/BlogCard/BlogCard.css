@@ -7,3 +7,7 @@
 .blogDesc{
     color: var(--text-secondary);
 }
+
+.Blog-card{
+    background-color: var(--secondary-bg);
+}

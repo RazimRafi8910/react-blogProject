@@ -3,7 +3,7 @@ import { Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
-import UserAcount from "../UserAcount";
+import UserAcount from "./UserAcount";
 import NavbarBoot from "react-bootstrap/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../../slice/userSlice";
@@ -43,7 +43,7 @@ function Navbar() {
                             <Link to={"/"} className="mb-0 mx-2 linkText">Blog</Link>
                         </Nav.Link>
                         <Nav.Link>
-                            <Link to={"/post"} className="mb-0 mx-2 linkText">New Post</Link>
+                            <Link to={"/post/new"} className="mb-0 mx-2 linkText">New Post</Link>
                         </Nav.Link>
                     </Nav>
                     <Nav >
@@ -69,7 +69,7 @@ function Navbar() {
                                 <i class="fa-regular fa-sun"></i>
                             </button>
                         )}
-                        {isUser ? (<UserAcount user={isUser} />) : (<Link to={"/login"} data-bs-theme={theme} className="btn btn-dark mb-1 ms-3 w-50">Login</Link>)}
+                        {isUser ? (<UserAcount user={isUser} />) : (<Link to={"/login"} data-bs-theme={theme} className="btn btn-dark mb-1 px-3 ms-3 w-50">Login</Link>)}
                     </Nav>
                 </NavbarBoot.Collapse>
             </Container>
@@ -78,5 +78,5 @@ function Navbar() {
         </>
     );
 }
-
+//
 export default Navbar;

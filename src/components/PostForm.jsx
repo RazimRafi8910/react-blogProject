@@ -1,41 +1,59 @@
-import React,{useEffect, useState} from 'react';
+import React,{ useCallback, useEffect, useState} from 'react';
 import { useSelector } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { addData, addPostImage, getImage } from '../firebase/firebaseDB';
+import { addData, addPostImage } from '../firebase/firebaseDB';
 import AlertBox from './AlertBox';
+import RTE from './RTE';
+import Loader from './Loader';
 
-function PostForm() {
+//yup schema for validation
+const schema = yup.object().shape({
+  tittle: yup.string().min(2).required(),
+  description: yup.string().min(2).required(),
+  slug: yup.string(),
+  content:yup.string().required(),
+  image: yup
+    .mixed()
+    .required()
+    .test('fileExist', 'image is needed', value =>  value && value[0] )
+    .test('fileSize', 'file Size is too large', value => value && value[0] && value[0].size <= 5 * 1024 * 1024)
+    .test('fileFormat', 'file Format not supported', value => value && value[0] && ['image/png', 'image/jpeg','image/jpg'].includes(value[0].type))
+});
+
+function PostForm({post}) {
   const theme = useSelector(state => state.themeReducer.theme);
   const user = useSelector(state => state.userReducer.user);
   const [isLodding, setIsLodding] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  //yup schema for validation
-  const schema = yup.object().shape({
-    tittle: yup.string().required(),
-    description: yup.string().min(2).required(),
-    image: yup
-      .mixed()
-      .required()
-      .test('fileExist', 'image is needed', value =>  value && value[0] )
-      .test('fileSize', 'file Size is too large', value => value && value[0] && value[0].size <= 5 * 1024 * 1024)
-      .test('fileFormat', 'file Format not supported', value => value && value[0] && ['image/png', 'image/jpeg','image/jpg'].includes(value[0].type))
-  });
-
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, watch, control, setValue, getValues, formState: { errors } } = useForm({
+    defaultValues: {
+      tittle: post?.tittle || '',
+      description: post?.description || '',
+      image: post?.image || '',
+      slug: post?.slug || '',
+      content:post?.content || '',
+    },
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data) => { 
+  //watch tittle for creating slug
+  const tittleWatch = watch('tittle');
+
+  useEffect(() => {
+        setValue('slug', slugFiy(tittleWatch), { shouldValidate: true });
+  },[tittleWatch])
+
+  const onSubmit = async (data) => {
     try {
       if (!user) {
         throw Error("Login to upload the post");
       }
       setIsLodding(true);
-      // post image upload to storage
+      // post image upload to storage return image url
       const imageUrl = await addPostImage(data.image);
       const newData = {
         ...data,
@@ -46,26 +64,26 @@ function PostForm() {
         image: imageUrl,
       };
       //add post data to firestore
-        const refId = await addData(newData);
-        console.log(refId);
+     const refId = await addData(newData);
+      
     } catch (error) {
       setSubmitError(error.message);
         console.log(error);
       } finally {
         setIsLodding(false);
       }
+  }
+
+  const slugFiy = useCallback((value) => {
+    if (value && typeof value === 'string') {
+      return value.trim().toLowerCase().replace(/[^a-zA-Z/d/s]+/g, '-').replace(/\s+/g, '-');
     }
+  }, []);
 
   if (isLodding) {
     return (
       <>
-        <div className="container" style={{ height: "100vh" }}>
-          <div className="row justify-content-center align-items-center">
-            <div class="spinner-border text-primary mt-3" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        </div>
+        <Loader loaderTittle={"Uploading..."} message={"Takes few seconds"} />       
       </>
     )
   }
@@ -85,24 +103,28 @@ function PostForm() {
               <hr className="mt-0 mb-3" />
             {submitError && <AlertBox errorMessage={submitError} />}
               <Form onSubmit={handleSubmit(onSubmit)} data-bs-theme={theme}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
+                <Form.Group className="mb-3" controlId="tittleInput">
                   <Form.Label>Tittle</Form.Label>
                   <Form.Control type="text" {...register("tittle")} />
-                  {errors?.tittle && <p className='text-danger'>{errors.tittle.message }</p>}
+                  {errors?.tittle ? <p className='text-danger'>{errors.tittle.message}</p> : <p className='text-muted'>slug: http://localhost:3001/post/{ getValues('slug') }</p>}
                 </Form.Group>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlTextarea1"
-                >
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control as="textarea" rows={8} {...register("description")} />
+                <Form.Group className="mb-3 d-none" controlId="slugInput">
+                  <Form.Label>Slug</Form.Label>
+                  <Form.Control type="text" {...register("slug")} readOnly />
+                  {errors?.slug && <p className='text-danger'>{errors.slug.message }</p>}
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="descriptionInput">
+                  <Form.Label>Short Description</Form.Label>
+                  <Form.Control as="textarea" rows={4} {...register("description")} />
                   {errors?.description && <p className='text-danger'>{errors.description.message }</p>}
                 </Form.Group>
-                <Form.Group controlId="formFileLg" className="mb-3 col-lg-6">
-                  <Form.Label>Choose Thumpnale</Form.Label>
+                <Form.Group>
+                  <Form.Label>Content</Form.Label>
+                  <RTE name={'content'} control={control} defaultValue={getValues('content')} />
+                  {errors?.content && <p className='text-danger'>{ errors.content.message }</p>}
+                </Form.Group>
+                <Form.Group controlId="imageInput" className="my-3 col-lg-6">
+                  <Form.Label>Cover Image</Form.Label>
                   <Form.Control type="file" size="md" {...register("image")} />
                   {errors?.image && <p className='text-danger'>{errors.image.message }</p> }
                 </Form.Group>

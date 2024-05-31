@@ -2,10 +2,10 @@ import React from "react";
 import PostForm from "../components/PostForm";
 
 
-function Post() {
+function NewPost() {
   return (
     <PostForm/>
   );
 }
 
-export default Post;
+export default NewPost;
