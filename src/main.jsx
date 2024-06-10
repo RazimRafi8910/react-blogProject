@@ -10,6 +10,8 @@ import AuthLayout from './components/AuthLayout.jsx'
 import NewPost from './pages/NewPost.jsx'
 import PostDetailsPage from './pages/PostDetailsPage.jsx'
 import Home from './pages/Home.jsx'
+import UserPostPage from './pages/UserPostPage.jsx'
+import PostEditPage from './pages/PostEditPage.jsx'
 
 // react router paths and elements
 const router = createBrowserRouter([
@@ -19,7 +21,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Home/>,
+        element: (
+          <AuthLayout authentication={false}>
+            <Home/>
+          </AuthLayout>
+        ),
       },
       {
         path: '/login',
@@ -46,10 +52,26 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: '/post/details',
+        path: '/post/:slug',
         element: (
           <AuthLayout authentication = {true}>
             <PostDetailsPage />
+          </AuthLayout>
+        )
+      },
+      {
+        path: '/post/edit/:slug',
+        element: (
+          <AuthLayout authentication={true}>
+            <PostEditPage/>
+          </AuthLayout>
+        )
+      },
+      {
+        path: '/post/user/:userId',
+        element: (
+          <AuthLayout authentication={true}>
+            <UserPostPage/>
           </AuthLayout>
         )
       }

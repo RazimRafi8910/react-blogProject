@@ -31,20 +31,18 @@ function Navbar() {
 
     return (
         <>
-        <NavbarBoot collapseOnSelect expand="lg" className=" p-0" data-bs-theme={theme}>
+        <NavbarBoot collapseOnSelect fixed="top" expand="lg" className={`p-0 border ${theme=='dark'?'bg-black':'bg-white'}`} data-bs-theme={theme}>
             <Container>
                 <NavbarBoot.Brand href="#home" className="navTittle">
-                    <h1>BlogProject</h1>
+                    <h2>BlogProject</h2>
                 </NavbarBoot.Brand>
                 <NavbarBoot.Toggle aria-controls="responsive-navbar-nav" />
                 <NavbarBoot.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link>
+                        </Nav.Link>
                             <Link to={"/"} className="mb-0 mx-2 linkText">Blog</Link>
-                        </Nav.Link>
-                        <Nav.Link>
                             <Link to={"/post/new"} className="mb-0 mx-2 linkText">New Post</Link>
-                        </Nav.Link>
                     </Nav>
                     <Nav >
                         {theme == "light" && (
@@ -55,7 +53,7 @@ function Navbar() {
                                     dispatch(changeTheme());
                                 }}
                             >
-                                <i class="toggle fa-solid fa-moon"></i>
+                                <i className="toggle fa-solid fa-moon"></i>
                             </button>
                         )}
                         {theme == "dark" && (
@@ -66,7 +64,7 @@ function Navbar() {
                                     dispatch(changeTheme());
                                 }}
                             >
-                                <i class="fa-regular fa-sun"></i>
+                                <i className="fa-regular fa-sun"></i>
                             </button>
                         )}
                         {isUser ? (<UserAcount user={isUser} />) : (<Link to={"/login"} data-bs-theme={theme} className="btn btn-dark mb-1 px-3 ms-3 w-50">Login</Link>)}

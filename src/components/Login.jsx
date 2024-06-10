@@ -62,8 +62,8 @@ function Login() {
             <>
                 <div className="container" style={{ height: "100vh" }}>
                     <div className="row justify-content-center h-75 align-items-center">
-                        <div class="spinner-border text-primary align-items-center" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                        <div className="spinner-border text-primary align-items-center" role="status">
+                            <span className="visually-hidden">Loading...</span>
                         </div>
                     </div>
                 </div>
@@ -132,7 +132,7 @@ function Login() {
                                         color: "var(--text-primary)",
                                     }}
                                 >
-                                    <i class="fa-brands fa-google mx-3"></i>
+                                    <i className="fa-brands fa-google mx-3"></i>
                                     Login with google
                                 </button>
                             </div>

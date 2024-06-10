@@ -4,7 +4,9 @@ import PostForm from "../components/PostForm";
 
 function NewPost() {
   return (
-    <PostForm/>
+    <div className="mt-5 pt-3">
+      <PostForm/>
+    </div>
   );
 }
 
