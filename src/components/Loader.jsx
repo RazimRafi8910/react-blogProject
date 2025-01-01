@@ -9,9 +9,9 @@ function Loader({ loaderTittle, message }) {
                         <span className="visually-hidden">Loading...</span>
                     </div> */}
                 <div className='h-100 mt-5'>
-                <div class="d-flex justify-content-center">
-                        <div class="spinner-border mt-5" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                <div className="d-flex justify-content-center">
+                        <div className="spinner-border mt-5" role="status">
+                            <span className="visually-hidden">Loading...</span>
                         </div>
                     </div>
                     <div className="d-flex justify-content-center ">

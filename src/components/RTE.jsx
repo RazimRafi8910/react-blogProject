@@ -1,14 +1,14 @@
 import { Editor } from '@tinymce/tinymce-react'
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import { Controller } from 'react-hook-form'
 import { useSelector } from 'react-redux';
 import config from '../config/config';
 
 function RTE({ name, control, defaultValue }) {
     const theme = useSelector(state => state.themeReducer.theme);
-    const [editorKey, setEditorKey] = React.useState(0);
+    const [editorKey, setEditorKey] = useState(0);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setEditorKey(prev => prev + 1);
      }, [theme]);
 

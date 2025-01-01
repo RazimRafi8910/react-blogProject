@@ -42,7 +42,8 @@ function UserAcount({ user }) {
           data-bs-theme="dark"
           id="dropdown-basic"
         >
-          <img
+          {user && 
+            <img
             src={
               user?.photoURL ||
               "https://media.istockphoto.com/id/1316947194/vector/messenger-profile-icon-on-white-isolated-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=1iQ926GXQTJkopoZAdYXgU17NCDJIRUzx6bhzgLm9ps="
@@ -54,6 +55,7 @@ function UserAcount({ user }) {
             data-bs-placement="left"
             data-bs-title="Tooltip on left"
           />
+           }
           {user.displayName}
         </Dropdown.Toggle>
 

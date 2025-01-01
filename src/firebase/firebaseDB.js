@@ -67,6 +67,7 @@ export const getUserPosts = async (userId) => {
     }
 }
 
+// delete post for user
 export const deletePost = async (slug) => {
     try {
         const { id:postId  } = await getPost(slug);
@@ -79,7 +80,7 @@ export const deletePost = async (slug) => {
 }
 
 
-// add post image ot firebase storage return image url
+// add post image to firebase storage and return image url
 export const addPostImage = async (image) => {
     try {
         
